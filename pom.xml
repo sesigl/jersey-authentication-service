@@ -111,7 +111,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <repoToken>notRequiredOnTravisCI</repoToken>
+                    <repoToken>${env.coveralls_repo_token}</repoToken>
                 </configuration>
             </plugin>
         </plugins>
