@@ -46,11 +46,7 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
 
             Auth auth = new Auth(new UserDao());
-            try {
-                if (!auth.isAuthorized(authId, authToken)) {
-                    requestContext.abortWith(ACCESS_UNAUTHORIZED);
-                }
-            } catch ( UserNotFoundExcpetion e) {
+            if (!auth.isAuthorized(authId, authToken)) {
                 requestContext.abortWith(ACCESS_UNAUTHORIZED);
             }
 
