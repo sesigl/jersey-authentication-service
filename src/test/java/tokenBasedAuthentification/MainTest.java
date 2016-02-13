@@ -26,6 +26,7 @@ public class MainTest {
         Thread.sleep(1000);
         InvokeInputStreamAfterSeconds(4);
         startServerThread();
+        Thread.sleep(5000);
         assertServerIsWorking();
         Thread.sleep(1000);
     }
