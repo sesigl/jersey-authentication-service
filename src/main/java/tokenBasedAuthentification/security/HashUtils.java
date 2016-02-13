@@ -9,10 +9,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class HashUtils {
+
+    private HashUtils(){}
+
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
     private static final Random RANDOM = new SecureRandom();
-
+    private static final String SECRET_KEY_ALGORITHM = "PBKDF2WithHmacSHA1";
     /**
      * Returns a salted and hashed password using the provided Hash.<br>
      * Note - side effect: the password is destroyed (the char[] is filled with zeros)
@@ -26,7 +29,7 @@ public class HashUtils {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
         try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(SECRET_KEY_ALGORITHM);
             return skf.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException("Error while hashing a password: " + e.getMessage(), e);
