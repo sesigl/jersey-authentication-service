@@ -1,75 +1,69 @@
 package tokenBasedAuthentification;
 
+import mockit.*;
+import mockit.integration.junit4.JMockit;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.utils.BufferInputStream;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import tokenBasedAuthentification.provider.AuthSecurityInterceptor;
+import tokenBasedAuthentification.provider.TransactionalBeginIntercepter;
+import tokenBasedAuthentification.provider.TransactionalEndIntercepter;
 import tokenBasedAuthentification.security.HashUtils;
 import tokenBasedAuthentification.vo.AuthRegisterElement;
 import tokenBasedAuthentification.vo.RegisterResultElement;
 
+import javax.crypto.SecretKeyFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
+import static mockit.internal.util.MethodReflection.invoke;
 import static org.junit.Assert.assertEquals;
 
+@RunWith(JMockit.class)
 public class MainTest {
     @Test
     public void mainStartsTheServer() throws Exception {
-        Thread.sleep(2000);
-        InvokeInputStreamAfterSeconds(4);
-        startServerThread();
-        Thread.sleep(5000);
-        assertServerIsWorking();
-        Thread.sleep(2000);
+        final boolean[] serverStarted = mockStartServer();
+
+        invokeUserInput();
+
+        Main.main(null);
+        Assert.assertTrue(serverStarted[0]);
     }
 
-    private void assertServerIsWorking() {
-        Client c = ClientBuilder.newClient();
-        WebTarget target = c.target(Main.getBaseUriString(8080));
-        RegisterResultElement registerResultElement = target.path("myresource/register").request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(new AuthRegisterElement("name", "password", "email@something.de")),
-                        RegisterResultElement.class);
-
-        assertEquals("email@something.de", registerResultElement.email);
-    }
-
-    private void startServerThread() {
-        Thread t1 = new Thread(new Runnable() {
-            public void run()
-            {
-                try {
-                    Main.main(null);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }});
-
-        t1.start();
-    }
-
-    private void InvokeInputStreamAfterSeconds(final int seconds) {
-        InputStream in = new InputStream() {
-            @Override
-            public int read() throws IOException {
-                try {
-                    Thread.sleep(seconds * 1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return 0;
+    private boolean[] mockStartServer() {
+        final boolean[] serverStarted = {false};
+        new MockUp<Main>() {
+            @Mock
+            public HttpServer startServer(int port) {
+                serverStarted[0] = true;
+                return new HttpServer();
             }
         };
+        return serverStarted;
+    }
+
+    private void invokeUserInput() {
+        InputStream in = new ByteArrayInputStream("\n".getBytes());
         System.setIn(in);
     }
+
 
     @Test
     public void constructorIsPrivate() throws Exception {
