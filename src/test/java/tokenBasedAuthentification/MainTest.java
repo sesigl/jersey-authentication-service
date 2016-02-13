@@ -23,9 +23,9 @@ import static org.junit.Assert.assertEquals;
 public class MainTest {
     @Test
     public void mainStartsTheServer() throws Exception {
-        InvokeInputStreamAfterSeconds(5);
+        InvokeInputStreamAfterSeconds(4);
         startServerThread();
-        assertServerIsWorking();
+        assertServerIsWorking();Thread.sleep(1000);
     }
 
     private void assertServerIsWorking() {
