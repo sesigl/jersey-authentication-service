@@ -38,17 +38,19 @@ public class Auth {
     }
 
     public boolean isAuthorized(String email, String authToken) {
-        User user = userDao.findByEmailAndAuthToken(email, authToken);
-        return user != null; //&& rolesAllowed.contains(user.getRole());
+        try {
+            //&& rolesAllowed.contains(user.getRole());
+            return userDao.findByEmailAndAuthToken(email, authToken) != null;
+        } catch (UserNotFoundExcpetion e ) {
+            return false;
+        }
     }
 
     /**
-     * TODO: throw AlreadUsedEmailAdressExpception on already used mail adress
-     * TODO: sent email
+     * TODO: send email
      * TODO: remove activationKeyFromJsonWhenSendingItToClient
-     *
-     * @param registerElement
-     * @return
+     * @param registerElement Contains user credentials
+     * @return Registration result
      */
     public RegisterResultElement register(AuthRegisterElement registerElement) {
 
@@ -77,8 +79,8 @@ public class Auth {
     /**
      * TODO: implement
      *
-     * @param authActivateElement
-     * @return
+     * @param authActivateElement Auth related user credentials
+     * @return Activate result data
      */
     public ActivateResultElement activate(AuthActivateElement authActivateElement) {
         User user = userDao.findByEmailAndActivationKey(authActivateElement.email, authActivateElement.activationKey);

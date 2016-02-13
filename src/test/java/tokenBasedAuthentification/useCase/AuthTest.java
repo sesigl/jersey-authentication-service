@@ -112,6 +112,18 @@ public class AuthTest {
         }
     }
 
+    public class Delete {
+        @Test(expected = UserNotFoundExcpetion.class)
+        public void deleteUserForUnknownUserThrowsExcpetion() {
+            auth.deleteUser(new AuthLoginElement("emailWrong", "..."));
+        }
+
+        @Test(expected = UserNotFoundExcpetion.class)
+        public void deleteUserForWrongPasswordThrowsExcpetion() {
+            auth.deleteUser(new AuthLoginElement(register.email, "..."));
+        }
+    }
+
     private AuthAccessElement activateAndLogin(String email, String password) {
         auth.activate(new AuthActivateElement(register.email, register.activationKey));
         return auth.login(new AuthLoginElement(email, password));
