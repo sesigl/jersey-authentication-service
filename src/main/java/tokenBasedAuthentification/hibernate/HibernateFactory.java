@@ -10,8 +10,7 @@ public class HibernateFactory {
 
     private static SessionFactory sessionFactory;
 
-    private HibernateFactory() {
-    }
+    private HibernateFactory() {}
 
     private static void initSessionFactoryIfNecessary() {
         if(sessionFactory == null) {
