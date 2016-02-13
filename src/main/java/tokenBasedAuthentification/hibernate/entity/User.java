@@ -34,18 +34,17 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        User otherUser = (User) obj;
 
-        if (
-                this.name.equals(otherUser.name) &&
-                        this.authToken.equals(otherUser.authToken) &&
-                        this.email.equals(otherUser.email) &&
-                        this.role.equals(otherUser.role)) {
+        if (obj == null) return false;
+        else if (!(obj instanceof User)) return false;
+        else {
 
-            return true;
-        } else {
+            User otherUser = (User) obj;
 
-            return false;
+            return this.name.equals(otherUser.name) &&
+                    this.authToken.equals(otherUser.authToken) &&
+                    this.email.equals(otherUser.email) &&
+                    this.role.equals(otherUser.role);
         }
     }
 }
