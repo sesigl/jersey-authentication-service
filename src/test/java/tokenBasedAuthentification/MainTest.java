@@ -23,12 +23,12 @@ import static org.junit.Assert.assertEquals;
 public class MainTest {
     @Test
     public void mainStartsTheServer() throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         InvokeInputStreamAfterSeconds(4);
         startServerThread();
         Thread.sleep(5000);
         assertServerIsWorking();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
     }
 
     private void assertServerIsWorking() {
