@@ -22,9 +22,9 @@ public class MyResourceTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        server = Main.startServer(8081);
+        server = Main.startServer(80);
         Client c = ClientBuilder.newClient();
-        target = c.target(Main.getBaseUriString(8081));
+        target = c.target(Main.getBaseUriString(80));
     }
 
     @AfterClass
