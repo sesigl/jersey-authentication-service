@@ -1,39 +1,17 @@
 package tokenBasedAuthentification;
 
-import mockit.*;
+import mockit.Mock;
+import mockit.MockUp;
 import mockit.integration.junit4.JMockit;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.utils.BufferInputStream;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import tokenBasedAuthentification.provider.AuthSecurityInterceptor;
-import tokenBasedAuthentification.provider.TransactionalBeginIntercepter;
-import tokenBasedAuthentification.provider.TransactionalEndIntercepter;
-import tokenBasedAuthentification.security.HashUtils;
-import tokenBasedAuthentification.vo.AuthRegisterElement;
-import tokenBasedAuthentification.vo.RegisterResultElement;
 
-import javax.crypto.SecretKeyFactory;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.net.URI;
-import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
-
-import static mockit.internal.util.MethodReflection.invoke;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(JMockit.class)
 public class MainTest {

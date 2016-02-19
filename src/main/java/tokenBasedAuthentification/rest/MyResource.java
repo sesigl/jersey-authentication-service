@@ -1,11 +1,9 @@
 package tokenBasedAuthentification.rest;
 
 import tokenBasedAuthentification.dao.UserDao;
-import tokenBasedAuthentification.vo.*;
 import tokenBasedAuthentification.useCase.auth.Auth;
+import tokenBasedAuthentification.vo.*;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -36,11 +34,10 @@ public class MyResource {
         return auth.activate(authActivateElement);
 	}
 
-	@GET
-	@Path("test")
-	@RolesAllowed("user")
-	public TestDataContainer test() {
-		return new TestDataContainer("A", "B", "C");
-
+	@POST
+	@Path("check")
+	public CheckAuthElement check(AuthAccessElement authAccessElement) {
+		Auth auth = new Auth(new UserDao());
+		return new CheckAuthElement(auth.isAuthorized(authAccessElement.getAuthId(), authAccessElement.getAuthToken()));
 	}
 }

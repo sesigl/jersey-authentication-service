@@ -1,11 +1,6 @@
 package tokenBasedAuthentification.vo;
 
-import java.io.Serializable;
-
-public class AuthAccessElement implements Serializable {
-
-    public static final String PARAM_AUTH_ID = "auth-id";
-    public static final String PARAM_AUTH_TOKEN = "auth-token";
+public class AuthAccessElement {
 
     private String authId;
     private String authToken;

@@ -1,17 +1,17 @@
 package tokenBasedAuthentification.rest;
 
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import tokenBasedAuthentification.Main;
+import tokenBasedAuthentification.vo.*;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.glassfish.grizzly.http.server.HttpServer;
-
-import org.junit.*;
-import tokenBasedAuthentification.Main;
-import tokenBasedAuthentification.vo.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,24 +40,20 @@ public class MyResourceTest {
         assertActivate(email, registerResultElement);
 
         AuthAccessElement authAccessElement = assertLogin(email);
-        assertAuthRequiredMethodAccess(authAccessElement);
+        assertCheckAccessIsTrue(authAccessElement);
     }
 
     @Test
     public void userNoAccess() {
-        Response result = target.path("myresource/test").request(MediaType.APPLICATION_JSON_TYPE)
-                .header(AuthAccessElement.PARAM_AUTH_ID, "AA")
-                .header(AuthAccessElement.PARAM_AUTH_TOKEN, "BB")
-                .get(Response.class);
-        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), result.getStatus());
+        CheckAuthElement result = target.path("myresource/check").request(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(new AuthAccessElement("wrong", "wrong", "user")), CheckAuthElement.class);
+        assertEquals(false, result.authorized);
     }
 
-    private void assertAuthRequiredMethodAccess(AuthAccessElement authAccessElement) {
-        TestDataContainer result = target.path("myresource/test").request(MediaType.APPLICATION_JSON_TYPE)
-                .header(AuthAccessElement.PARAM_AUTH_ID, authAccessElement.getAuthId())
-                .header(AuthAccessElement.PARAM_AUTH_TOKEN, authAccessElement.getAuthToken())
-                .get(TestDataContainer.class);
-        assertEquals("A", result.a);
+    private void assertCheckAccessIsTrue(AuthAccessElement authAccessElement) {
+        CheckAuthElement result = target.path("myresource/check").request(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(new AuthAccessElement(authAccessElement.getAuthId(), authAccessElement.getAuthToken(), "user")), CheckAuthElement.class);
+        assertEquals(true, result.authorized);
     }
 
     private AuthAccessElement assertLogin(String email) {
