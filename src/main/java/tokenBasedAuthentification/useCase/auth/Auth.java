@@ -1,11 +1,13 @@
 package tokenBasedAuthentification.useCase.auth;
 
-import tokenBasedAuthentification.dao.UserDao;
+import com.google.inject.Inject;
 import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dao.interfaces.IUserDao;
 import tokenBasedAuthentification.hibernate.entity.User;
 import tokenBasedAuthentification.security.HashUtils;
 import tokenBasedAuthentification.useCase.auth.exception.NotUniqueException;
+import tokenBasedAuthentification.useCase.auth.interfaces.IAuth;
+import tokenBasedAuthentification.vo.*;
 
 import java.util.UUID;
 
@@ -16,14 +18,16 @@ import java.util.UUID;
  * - User can login
  * - User can stay logged in via auth token
  */
-public class Auth {
+public class Auth implements IAuth {
 
-    UserDao userDao;
+    IUserDao userDao;
 
-    public Auth(UserDao userDao) {
+    @Inject
+    public Auth(IUserDao userDao) {
         this.userDao = userDao;
     }
 
+    @Override
     public AuthAccessElement login(AuthLoginElement loginElement) {
 
         User user = userDao.findByEmail(loginElement.getEmail());
@@ -37,6 +41,7 @@ public class Auth {
         }
     }
 
+    @Override
     public boolean isAuthorized(String email, String authToken) {
         try {
             //&& rolesAllowed.contains(user.getRole());
@@ -52,6 +57,7 @@ public class Auth {
      * @param registerElement Contains user credentials
      * @return Registration result
      */
+    @Override
     public RegisterResultElement register(AuthRegisterElement registerElement) {
 
         if (userDao.hasUserWithEmail(registerElement.email)) {
@@ -82,6 +88,7 @@ public class Auth {
      * @param authActivateElement Auth related user credentials
      * @return Activate result data
      */
+    @Override
     public ActivateResultElement activate(AuthActivateElement authActivateElement) {
         User user = userDao.findByEmailAndActivationKey(authActivateElement.email, authActivateElement.activationKey);
         user.activated = true;
@@ -89,6 +96,7 @@ public class Auth {
         return new ActivateResultElement("activation successful", user.email);
     }
 
+    @Override
     public void deleteUser(AuthLoginElement loginElement) {
         User user = userDao.findByEmail(loginElement.getEmail());
 

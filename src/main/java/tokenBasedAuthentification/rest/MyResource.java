@@ -1,7 +1,9 @@
 package tokenBasedAuthentification.rest;
 
-import tokenBasedAuthentification.dao.UserDao;
-import tokenBasedAuthentification.useCase.auth.Auth;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import tokenBasedAuthentification.config.AuthModule;
+import tokenBasedAuthentification.useCase.auth.interfaces.IAuth;
 import tokenBasedAuthentification.vo.*;
 
 import javax.ws.rs.POST;
@@ -13,16 +15,14 @@ public class MyResource {
     @POST
 	@Path("login")
 	public AuthAccessElement login(AuthLoginElement loginElement) {
-        Auth auth = new Auth(new UserDao());
-		return auth.login(loginElement);
+		return getAuth().login(loginElement);
 	}
 
-    @POST
+	@POST
 	@Path("register")
 	public RegisterResultElement register(AuthRegisterElement registerElement) {
         //		validate(registerElement.email); //TODO: move into business logic layer
-        Auth auth = new Auth(new UserDao());
-        return auth.register(registerElement);
+        return getAuth().register(registerElement);
 
 	}
 
@@ -30,14 +30,17 @@ public class MyResource {
 	@POST
 	@Path("activate")
 	public ActivateResultElement activate(AuthActivateElement authActivateElement) {
-        Auth auth = new Auth(new UserDao());
-        return auth.activate(authActivateElement);
+        return getAuth().activate(authActivateElement);
 	}
 
 	@POST
 	@Path("check")
 	public CheckAuthElement check(AuthAccessElement authAccessElement) {
-		Auth auth = new Auth(new UserDao());
-		return new CheckAuthElement(auth.isAuthorized(authAccessElement.getAuthId(), authAccessElement.getAuthToken()));
+		return new CheckAuthElement(getAuth().isAuthorized(authAccessElement.getAuthId(), authAccessElement.getAuthToken()));
+	}
+
+	private IAuth getAuth() {
+		Injector injector = Guice.createInjector(new AuthModule());
+		return injector.getInstance(IAuth.class);
 	}
 }

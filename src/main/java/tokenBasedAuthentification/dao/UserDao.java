@@ -1,19 +1,24 @@
 package tokenBasedAuthentification.dao;
 
+import com.google.inject.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
-import tokenBasedAuthentification.hibernate.entity.User;
+import tokenBasedAuthentification.dao.interfaces.IUserDao;
 import tokenBasedAuthentification.hibernate.HibernateFactory;
+import tokenBasedAuthentification.hibernate.entity.User;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class UserDao {
+public class UserDao implements IUserDao{
+
+    @Inject
     public UserDao() {
     }
 
+    @Override
     public User findByEmailAndPassword(String email, String password) {
         HashMap<Object, Object> searchCriterias = new HashMap<Object, Object>();
 
@@ -36,6 +41,7 @@ public class UserDao {
         throw new UserNotFoundExcpetion("No user found for given email: " + email + " and password ***");
     }
 
+    @Override
     public User findByEmailAndAuthToken(String email, String authToken) {
         Session session = HibernateFactory.CreateNewSession();
         Criteria criteria = session.createCriteria(User.class);
@@ -56,6 +62,7 @@ public class UserDao {
         throw new UserNotFoundExcpetion("No user found for given email: " + email + " and authToken: " + authToken);
     }
 
+    @Override
     public User findByEmail(String email) {
         Session session = HibernateFactory.CreateNewSession();
         Criteria criteria = session.createCriteria(User.class);
@@ -74,6 +81,7 @@ public class UserDao {
         throw new UserNotFoundExcpetion("No user found for given email: " + email);
     }
 
+    @Override
     public boolean hasUserWithEmail(String email) {
         Session session = HibernateFactory.CreateNewSession();
         Criteria criteria = session.createCriteria(User.class);
@@ -89,18 +97,21 @@ public class UserDao {
         }
     }
 
+    @Override
     public void save(User user) {
         Session session = HibernateFactory.CreateNewSession();
         session.saveOrUpdate(user);
         HibernateFactory.CloseSession(session);
     }
 
+    @Override
     public void delete(User user) {
         Session session = HibernateFactory.CreateNewSession();
         session.delete(user);
         HibernateFactory.CloseSession(session);
     }
 
+    @Override
     public User findByEmailAndActivationKey(String email, String key) {
         Session session = HibernateFactory.CreateNewSession();
         Criteria criteria = session.createCriteria(User.class);
