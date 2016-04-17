@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import tokenBasedAuthentification.dao.UserDao;
 import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dto.*;
 import tokenBasedAuthentification.useCase.auth.Auth;
 import tokenBasedAuthentification.useCase.auth.exception.NotUniqueException;
 

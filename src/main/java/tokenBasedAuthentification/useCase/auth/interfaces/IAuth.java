@@ -1,6 +1,6 @@
 package tokenBasedAuthentification.useCase.auth.interfaces;
 
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dto.*;
 
 public interface IAuth {
 

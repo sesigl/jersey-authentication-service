@@ -5,7 +5,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import tokenBasedAuthentification.Main;
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dto.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import tokenBasedAuthentification.config.AuthModule;
 import tokenBasedAuthentification.useCase.auth.interfaces.IAuth;
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dto.*;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

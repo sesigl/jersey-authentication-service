@@ -7,7 +7,7 @@ import tokenBasedAuthentification.hibernate.entity.User;
 import tokenBasedAuthentification.security.HashUtils;
 import tokenBasedAuthentification.useCase.auth.exception.NotUniqueException;
 import tokenBasedAuthentification.useCase.auth.interfaces.IAuth;
-import tokenBasedAuthentification.vo.*;
+import tokenBasedAuthentification.dto.*;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class Auth implements IAuth {
 
-    IUserDao userDao;
+    private IUserDao userDao;
 
     @Inject
     public Auth(IUserDao userDao) {

@@ -1,4 +1,4 @@
-package tokenBasedAuthentification.vo;
+package tokenBasedAuthentification.dto;
 
 public class CheckAuthElement {
     public boolean authorized;
