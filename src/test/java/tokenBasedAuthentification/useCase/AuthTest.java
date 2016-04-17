@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import tokenBasedAuthentification.dao.UserDao;
-import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
+import tokenBasedAuthentification.dao.exception.UserNotFoundException;
 import tokenBasedAuthentification.dto.*;
 import tokenBasedAuthentification.useCase.auth.Auth;
 import tokenBasedAuthentification.useCase.auth.exception.NotUniqueException;
@@ -33,17 +33,17 @@ public class AuthTest {
 
     public class Login {
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void loginThrowsException_emailWrong() throws Exception {
             auth.login(new AuthLoginElement("emailWrong", "password"));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void loginThrowsException_passwordWrong() throws Exception {
             auth.login(new AuthLoginElement("email", "passwordWrong"));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void loginThrowsException_userNotActivated() throws Exception {
             auth.login(new AuthLoginElement("email", "password"));
         }
@@ -64,13 +64,13 @@ public class AuthTest {
                 Assert.assertTrue(auth.isAuthorized("email", login.getAuthToken()));
             }
 
-            @Test(expected = UserNotFoundExcpetion.class)
+            @Test(expected = UserNotFoundException.class)
             public void wrongAuthTokenThrowsException() {
                 auth.login(new AuthLoginElement("email", "password"));
                 Assert.assertTrue(auth.isAuthorized("email", "justWrongToken"));
             }
 
-            @Test(expected = UserNotFoundExcpetion.class)
+            @Test(expected = UserNotFoundException.class)
             public void wrongEmailThrowsException() {
                 AuthAccessElement login = auth.login(new AuthLoginElement("email", "password"));
                 auth.isAuthorized("emailWrong", login.getAuthToken());
@@ -99,7 +99,7 @@ public class AuthTest {
     }
 
     public class Activate {
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void activationForNonExistingUserDoesNotWork() {
             auth.activate(new AuthActivateElement("emailWrong", register.activationKey));
         }
@@ -113,12 +113,12 @@ public class AuthTest {
     }
 
     public class Delete {
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void deleteUserForUnknownUserThrowsExcpetion() {
             auth.deleteUser(new AuthLoginElement("emailWrong", "..."));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void deleteUserForWrongPasswordThrowsExcpetion() {
             auth.deleteUser(new AuthLoginElement(register.email, "..."));
         }

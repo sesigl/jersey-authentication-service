@@ -1,13 +1,13 @@
 package tokenBasedAuthentification.useCase.auth;
 
 import com.google.inject.Inject;
-import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
+import tokenBasedAuthentification.dao.exception.UserNotFoundException;
 import tokenBasedAuthentification.dao.interfaces.IUserDao;
+import tokenBasedAuthentification.dto.*;
 import tokenBasedAuthentification.hibernate.entity.User;
 import tokenBasedAuthentification.security.HashUtils;
 import tokenBasedAuthentification.useCase.auth.exception.NotUniqueException;
 import tokenBasedAuthentification.useCase.auth.interfaces.IAuth;
-import tokenBasedAuthentification.dto.*;
 
 import java.util.UUID;
 
@@ -37,7 +37,7 @@ public class Auth implements IAuth {
             userDao.save(user);
             return new AuthAccessElement(loginElement.getEmail(), user.authToken, user.role);
         } else {
-            throw new UserNotFoundExcpetion("No user found for given email: " + user.email + " and password ***");
+            throw new UserNotFoundException("No user found for given email: " + user.email + " and password ***");
         }
     }
 
@@ -46,7 +46,7 @@ public class Auth implements IAuth {
         try {
             //&& rolesAllowed.contains(user.getRole());
             return userDao.findByEmailAndAuthToken(email, authToken) != null;
-        } catch (UserNotFoundExcpetion e ) {
+        } catch (UserNotFoundException e) {
             return false;
         }
     }
@@ -103,7 +103,7 @@ public class Auth implements IAuth {
         if (new String(HashUtils.Hash(loginElement.getPassword().toCharArray(), user.salt)).equals(user.password)) {
             userDao.delete(user);
         } else {
-            throw new UserNotFoundExcpetion("No user found for given email: " + user.email + " and password ***");
+            throw new UserNotFoundException("No user found for given email: " + user.email + " and password ***");
         }
     }
 }

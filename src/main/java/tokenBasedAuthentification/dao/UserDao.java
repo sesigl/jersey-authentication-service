@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
+import tokenBasedAuthentification.dao.exception.UserNotFoundException;
 import tokenBasedAuthentification.dao.interfaces.IUserDao;
 import tokenBasedAuthentification.hibernate.HibernateUtils;
 import tokenBasedAuthentification.hibernate.entity.User;
@@ -37,7 +37,7 @@ public class UserDao implements IUserDao{
             return list.get(0);
         }
 
-        throw new UserNotFoundExcpetion("No user found for given email: " + email + " and password ***");
+        throw new UserNotFoundException("No user found for given email: " + email + " and password ***");
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserDao implements IUserDao{
             return list.get(0);
         }
 
-        throw new UserNotFoundExcpetion("No user found for given email: " + email + " and authToken: " + authToken);
+        throw new UserNotFoundException("No user found for given email: " + email + " and authToken: " + authToken);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserDao implements IUserDao{
             return list.get(0);
         }
 
-        throw new UserNotFoundExcpetion("No user found for given email: " + email);
+        throw new UserNotFoundException("No user found for given email: " + email);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class UserDao implements IUserDao{
         if (list.size() > 0) {
             return list.get(0);
         } else {
-            throw new UserNotFoundExcpetion("No user found for given email: " + email + " and key ***");
+            throw new UserNotFoundException("No user found for given email: " + email + " and key ***");
         }
     }
 }

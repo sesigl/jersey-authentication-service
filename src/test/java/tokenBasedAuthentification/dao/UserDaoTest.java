@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import tokenBasedAuthentification.dao.exception.UserNotFoundExcpetion;
+import tokenBasedAuthentification.dao.exception.UserNotFoundException;
 import tokenBasedAuthentification.hibernate.entity.User;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -66,7 +66,7 @@ public class UserDaoTest {
             Assert.assertEquals(id, byUsernameAndPassword.id);
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void passwordIsChangeable_oldPasswordShouldNotWorkAnymore() throws Exception {
             User byUsernameAndPassword = userDao.findByEmailAndPassword("email", "password");
             Assert.assertEquals(id, byUsernameAndPassword.id);
@@ -87,13 +87,13 @@ public class UserDaoTest {
             Assert.assertTrue(user.equals(byUsernameAndPassword));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void shouldNotSelectTheUserByWrongEmail() throws Exception {
             User byUsernameAndPassword = userDao.findByEmailAndPassword("nameNotExisting", "password");
             Assert.assertTrue(user.equals(byUsernameAndPassword));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void shouldNotSelectTheUserByWrongPassword() throws Exception {
             User byUsernameAndPassword = userDao.findByEmailAndPassword("email", "wrongPassword");
             Assert.assertTrue(user.equals(byUsernameAndPassword));
@@ -105,13 +105,13 @@ public class UserDaoTest {
             Assert.assertTrue(user.equals(byUsernameAndPassword));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void shouldGetUserByEmailAndAuthToken_wrongEmail() {
             User byUsernameAndPassword = userDao.findByEmailAndAuthToken("emailWrong", "authToken");
             Assert.assertTrue(user.equals(byUsernameAndPassword));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void shouldGetUserByEmailAndAuthToken_wrongToken() {
             User byUsernameAndPassword = userDao.findByEmailAndAuthToken("email", "authTokenWrong");
             Assert.assertTrue(user.equals(byUsernameAndPassword));
@@ -123,7 +123,7 @@ public class UserDaoTest {
             Assert.assertTrue(user.equals(byUsernameAndPassword));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void shouldGetUserByEmail_wrongEmail() {
             User byUsernameAndPassword = userDao.findByEmail("emailWrong");
             Assert.assertTrue(user.equals(byUsernameAndPassword));
@@ -139,12 +139,12 @@ public class UserDaoTest {
             Assert.assertFalse(userDao.hasUserWithEmail("emailWrong"));
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void findUserByEmailAndActivationKey_throwsExceptionOnInvalidEmail() {
             userDao.findByEmailAndActivationKey("wrongEmail", "validKey");
         }
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void findUserByEmailAndActivationKey_throwsExceptionOnInvalidKey() {
             userDao.findByEmailAndActivationKey("email", "invalidKey");
         }
@@ -159,7 +159,7 @@ public class UserDaoTest {
 
     public class Delete {
 
-        @Test(expected = UserNotFoundExcpetion.class)
+        @Test(expected = UserNotFoundException.class)
         public void deleteTheGivenUser() throws Exception {
             User byUsernameAndPassword = userDao.findByEmailAndPassword("email", "password");
             userDao.delete(byUsernameAndPassword);
