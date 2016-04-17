@@ -3,8 +3,6 @@ package tokenBasedAuthentification;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import tokenBasedAuthentification.provider.TransactionalBeginIntercepter;
-import tokenBasedAuthentification.provider.TransactionalEndIntercepter;
 
 import java.io.IOException;
 import java.net.URI;
@@ -27,10 +25,6 @@ public class Main {
     public static HttpServer startServer(int port) {
         // create a resource config that scans for JAX-RS resources and providers
         final ResourceConfig rc = new ResourceConfig().packages("tokenBasedAuthentification.rest");
-        rc.register(TransactionalBeginIntercepter.class);
-        rc.register(TransactionalEndIntercepter.class);
-
-
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(getBaseUriString(port)), rc);
     }
 
