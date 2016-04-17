@@ -16,20 +16,17 @@ public class UserTest {
     @Before
     public void setUp() throws Exception {
         user = new User("name", "email", "token", "role", "password");
+        user.id = 1;
     }
 
     @Test
     public void equalsComparesUsersData() throws Exception {
         User user2 = new User("name", "email", "token", "role", "password");
+        user2.id = 1;
         Assert.assertTrue(user.equals(user2));
     }
 
     public class relevantCompareAttributes {
-        @Test
-        public void equalsComparesUsersData_name() throws Exception {
-            User user2 = new User("name2", "email", "token", "role", "password");
-            Assert.assertFalse(user.equals(user2));
-        }
 
         @Test
         public void equalsComparesUsersData_email() throws Exception {
@@ -38,57 +35,19 @@ public class UserTest {
         }
 
         @Test
-        public void equalsComparesUsersData_token() throws Exception {
-            User user2 = new User("name", "email", "token2", "role", "password");
-            Assert.assertFalse(user.equals(user2));
-        }
-
-        @Test
-        public void equalsComparesUsersData_role() throws Exception {
-            User user2 = new User("name", "email", "token", "role2", "password");
+        public void equalsComparesUsersData_id() throws Exception {
+            User user2 = new User("name", "email", "token", "role", "password");
+            user2.id = 9;
             Assert.assertFalse(user.equals(user2));
         }
     }
 
     public class nonRelevantCompareAttributes {
         @Test
-        public void equalsComparesUsersDataExcept_id() throws Exception {
+        public void equalsComparesUsersBusinessData() throws Exception {
             user.id = 1;
-            User user2 = new User("name", "email", "token", "role", "password");
-            user2.id = 2;
-            Assert.assertTrue(user.equals(user2));
-        }
-
-        @Test
-        public void equalsComparesUsersDataExcept_password() throws Exception {
-            User user2 = new User("name", "email", "token", "role", "password2");
-            Assert.assertTrue(user.equals(user2));
-        }
-
-        @Test
-        public void equalsComparesUsersDataExcept_activated() throws Exception {
-            user.activated = true;
-            User user2 = new User("name", "email", "token", "role", "password2");
-            user2.activated = false;
-
-            Assert.assertTrue(user.equals(user2));
-        }
-
-        @Test
-        public void equalsComparesUsersDataExcept_activationKey() throws Exception {
-            user.activationKey = "123";
-            User user2 = new User("name", "email", "token", "role", "password2");
-            user2.activationKey = "456";
-
-            Assert.assertTrue(user.equals(user2));
-        }
-
-        @Test
-        public void equalsComparesUsersDataExcept_salt() throws Exception {
-            user.salt = "123".getBytes();
-            User user2 = new User("name", "email", "token", "role", "password2");
-            user2.salt = "456".getBytes();
-
+            User user2 = new User("nameNE", "email", "tokenNE", "roleNE", "passwordNE");
+            user2.id = 1;
             Assert.assertTrue(user.equals(user2));
         }
     }

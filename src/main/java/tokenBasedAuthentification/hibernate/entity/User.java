@@ -33,18 +33,29 @@ public class User {
     public String activationKey;
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (obj == null) return false;
-        else if (!(obj instanceof User)) return false;
-        else {
+        User user = (User) o;
 
-            User otherUser = (User) obj;
+        return id == user.id && (email != null ? email.equals(user.email) : user.email == null);
 
-            return this.name.equals(otherUser.name) &&
-                    this.authToken.equals(otherUser.authToken) &&
-                    this.email.equals(otherUser.email) &&
-                    this.role.equals(otherUser.role);
-        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
