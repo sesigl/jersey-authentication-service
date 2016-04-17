@@ -6,11 +6,11 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-public class HibernateFactory {
+public class HibernateUtils {
 
     private static SessionFactory sessionFactory;
 
-    private HibernateFactory() {}
+    private HibernateUtils() {}
 
     private static void initSessionFactoryIfNecessary() {
         if(sessionFactory == null) {
@@ -22,7 +22,7 @@ public class HibernateFactory {
 
     }
 
-    public static Session CreateNewSession() {
+    public static Session createNewSession() {
         initSessionFactoryIfNecessary();
 
         Session session = sessionFactory.openSession();
@@ -30,7 +30,7 @@ public class HibernateFactory {
         return session;
     }
 
-    public static void CloseSession(Session session) {
+    public static void closeSession(Session session) {
         session.getTransaction().commit();
         session.close();
     }

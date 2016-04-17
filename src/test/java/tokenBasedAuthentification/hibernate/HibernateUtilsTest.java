@@ -6,10 +6,10 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
-public class HibernateFactoryTest {
+public class HibernateUtilsTest {
     @Test
     public void constructorIsPrivate() throws Exception {
-        Constructor<HibernateFactory> constructor = HibernateFactory.class.getDeclaredConstructor();
+        Constructor<HibernateUtils> constructor = HibernateUtils.class.getDeclaredConstructor();
         Assert.assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         constructor.newInstance();

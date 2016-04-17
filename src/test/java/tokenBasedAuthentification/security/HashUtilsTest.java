@@ -2,16 +2,13 @@ package tokenBasedAuthentification.security;
 
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import tokenBasedAuthentification.hibernate.HibernateFactory;
 
 import javax.crypto.SecretKeyFactory;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
